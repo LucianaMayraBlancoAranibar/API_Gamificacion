@@ -1,0 +1,69 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\badges\\imagen_avanzado.png",
+      "PackagePath": "staticwebassets\\badges\\imagen_avanzado.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\badges\\imagen_experto.png",
+      "PackagePath": "staticwebassets\\badges\\imagen_experto.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\badges\\imagen_inicial.png",
+      "PackagePath": "staticwebassets\\badges\\imagen_inicial.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\badges\\imagen_intermedio.png",
+      "PackagePath": "staticwebassets\\badges\\imagen_intermedio.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\badges\\imagen_maestro.png",
+      "PackagePath": "staticwebassets\\badges\\imagen_maestro.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\badges\\imagen_principiante.png",
+      "PackagePath": "staticwebassets\\badges\\imagen_principiante.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\0b56e811-7a61-41e7-86a4-8cbe597ed756.png",
+      "PackagePath": "staticwebassets\\images\\0b56e811-7a61-41e7-86a4-8cbe597ed756.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\0cd61726-f353-471c-b9b5-3916c7f07cd4.PNG",
+      "PackagePath": "staticwebassets\\images\\0cd61726-f353-471c-b9b5-3916c7f07cd4.PNG"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\1247dc7a-79d1-40b7-ae04-845157ec2083.PNG",
+      "PackagePath": "staticwebassets\\images\\1247dc7a-79d1-40b7-ae04-845157ec2083.PNG"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\6989b6b3-dd5c-4485-acea-2066f23b0ccc.png",
+      "PackagePath": "staticwebassets\\images\\6989b6b3-dd5c-4485-acea-2066f23b0ccc.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\d96ea90c-fe15-4253-9cda-a3e2e01153a5.PNG",
+      "PackagePath": "staticwebassets\\images\\d96ea90c-fe15-4253-9cda-a3e2e01153a5.PNG"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\e0626087-8134-410c-80af-e0f6908de6f1.png",
+      "PackagePath": "staticwebassets\\images\\e0626087-8134-410c-80af-e0f6908de6f1.png"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.Gamificacion_API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.Gamificacion_API.props",
+      "PackagePath": "build\\Gamificacion_API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.Gamificacion_API.props",
+      "PackagePath": "buildMultiTargeting\\Gamificacion_API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.Gamificacion_API.props",
+      "PackagePath": "buildTransitive\\Gamificacion_API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
