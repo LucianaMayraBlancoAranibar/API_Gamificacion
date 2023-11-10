@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gamificacion_API.Data;
 using Gamificacion_API.Models;
+using BCrypt.Net;
 
 namespace Gamificacion_API.Controllers
 {
@@ -103,29 +104,33 @@ namespace Gamificacion_API.Controllers
 
                 if (gestor == null)
                 {
-                    return NotFound(); // Devolver una respuesta HTTP 404 Not Found si no se encuentra el gestor
+                    return NotFound(); 
                 }
 
                 var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == id);
 
                 if (usuario == null)
                 {
-                    return NotFound(); // Devolver una respuesta HTTP 404 Not Found si no se encuentra el usuario
+                    return NotFound(); 
                 }
 
-                // Actualiza los datos del gestor y usuario con los nuevos datos
                 gestor.FirstName = updatedGestorUser.FirstName;
                 gestor.LastName = updatedGestorUser.LastName;
                 usuario.Email = updatedGestorUser.Email;
                 usuario.Rol = updatedGestorUser.Rol;
-                usuario.Password = updatedGestorUser.Password;
                 usuario.IdAcademicUnity = updatedGestorUser.IdAcademicUnity;
                 usuario.IdCareer = updatedGestorUser.IdCareer;
+                usuario.Password = updatedGestorUser.Password;
+/*
+                if (usuario.Password != updatedGestorUser.Password)
+                {
+                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(updatedGestorUser.Password);
+                    usuario.Password = hashedPassword;
+                }*/
 
-                // Guarda los cambios en la base de datos
                 await _context.SaveChangesAsync();
 
-                return Ok("Gestor y usuario actualizados con éxito.");
+                return Ok("Gestor actualizado con éxito.");
             }
             catch (Exception ex)
             {
@@ -149,11 +154,13 @@ namespace Gamificacion_API.Controllers
             {
                 using (var transaction = _context.Database.BeginTransaction())
                 {
+                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(gup.Password);
+
                     var user = new Usuario
                     {
                         Email = gup.Email,
                         Rol = gup.Rol,
-                        Password = gup.Password,
+                        Password = hashedPassword,
                         IdAcademicUnity = gup.IdAcademicUnity,
                         IdCareer = gup.IdCareer
                     };
