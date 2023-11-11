@@ -172,7 +172,6 @@ namespace Gamificacion_API.Controllers
                         IdGestorNavigation = user
                     };
 
-
                     _context.Usuarios.Add(user);
                     _context.Gestors.Add(gestor);
 
