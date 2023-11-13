@@ -11,7 +11,7 @@ public partial class Career
 
     public int IdDepartment { get; set; }
 
-    public virtual Department IdDepartmentNavigation { get; set; } = null!;
+    public virtual Department? IdDepartmentNavigation { get; set; } = null!;
 
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }
