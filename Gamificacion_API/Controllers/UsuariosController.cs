@@ -225,23 +225,68 @@ namespace Gamificacion_API.Controllers
         [Route("api/users/change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
         {
-            if (model == null || string.IsNullOrEmpty(model.OldPassword) || string.IsNullOrEmpty(model.NewPassword) || model.NewPassword != model.ConfirmNewPassword)
-                return BadRequest("Datos inválidos.");
+            if (model == null)
+            {
+                return BadRequest("El modelo no puede ser nulo.");
+            }
+
+            if (string.IsNullOrEmpty(model.OldPassword) || string.IsNullOrEmpty(model.NewPassword))
+            {
+                return BadRequest("La contraseña antigua y la nueva son requeridas.");
+            }
+
+            if (model.NewPassword != model.ConfirmNewPassword)
+            {
+                return BadRequest("La nueva contraseña y la confirmación no coinciden.");
+            }
 
             var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == model.Email);
 
             if (user == null)
+            {
                 return NotFound("Usuario no encontrado.");
+            }
 
-            bool isOldPasswordValid = BCrypt.Net.BCrypt.Verify(model.OldPassword, user.Password);
+            bool isOldPasswordValid = false;
+
+            try
+            {
+                isOldPasswordValid = BCrypt.Net.BCrypt.Verify(model.OldPassword, user.Password);
+            }
+            catch (Exception ex)
+            {
+                // Captura cualquier error que pueda ocurrir durante la verificación de la contraseña
+                // En un entorno de producción, considera registrar este error con un sistema de log
+                return StatusCode(500, "Hubo un error al verificar la contraseña antigua.");
+            }
 
             if (!isOldPasswordValid)
+            {
                 return BadRequest("La contraseña antigua no es correcta.");
+            }
 
-            user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+            try
+            {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+            }
+            catch (Exception ex)
+            {
+                // Captura cualquier error que pueda ocurrir durante el hasheo de la contraseña
+                // En un entorno de producción, considera registrar este error con un sistema de log
+                return StatusCode(500, "Hubo un error al hashear la nueva contraseña.");
+            }
 
-            _context.Usuarios.Update(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Usuarios.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Captura cualquier error que pueda ocurrir al guardar los cambios en la base de datos
+                // En un entorno de producción, considera registrar este error con un sistema de log
+                return StatusCode(500, "Hubo un error al guardar la nueva contraseña en la base de datos.");
+            }
 
             return Ok("Contraseña actualizada con éxito.");
         }

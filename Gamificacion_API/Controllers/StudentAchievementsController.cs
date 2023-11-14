@@ -76,7 +76,6 @@ namespace Gamificacion_API.Controllers
             };
 
             _context.StudentAchievements.Add(studentAchievement);
-            // Actualizar puntos de badge
             var badgeUpdateResult = await UpdateBadgePoints(student, achievement);
             if (badgeUpdateResult is not OkResult)
             {
@@ -121,7 +120,6 @@ namespace Gamificacion_API.Controllers
                 .Select(rule => rule.RankId)
                 .FirstOrDefault();
 
-            // Verifica si el rango ha cambiado antes de actualizar
             if (studentRankId != student.IdRank)
             {
                
@@ -153,25 +151,60 @@ namespace Gamificacion_API.Controllers
             return Ok();
         }
 
-        // PUT: api/StudentAchievements/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudentAchievement(int id, StudentAchievement studentAchievement)
+        // GET: api/StudentAchievements/AllAssignments
+        [HttpGet("AllAssignments")]
+        public async Task<ActionResult<IEnumerable<Object>>> GetAllAssignments()
         {
-            if (id != studentAchievement.IdStudentAchievement)
+            if (_context.StudentAchievements == null)
             {
-                return BadRequest();
+                return NotFound();
+            }
+            var assignments = await _context.StudentAchievements
+                .Include(sa => sa.IdStudentNavigation) 
+                .Include(sa => sa.IdAchievementNavigation) 
+                .Select(sa => new {
+                    Id = sa.IdStudentAchievement, 
+                    StudentName = sa.IdStudentNavigation.FirstName + " " + sa.IdStudentNavigation.LastName,
+                    AchievementName = sa.IdAchievementNavigation.NameAchievemt, 
+                    Points = sa.StudentPoints,
+                    // AssignedDate = sa.AssignedDate // 
+                })
+                .ToListAsync();
+            return assignments;
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditAssignment(int id, [FromBody] EditAssignmentDto assignmentDto)
+        {
+            var assignment = await _context.StudentAchievements.FindAsync(id);
+            if (assignment == null)
+            {
+                return NotFound();
             }
 
-            _context.Entry(studentAchievement).State = EntityState.Modified;
+            // Ajustar el puntaje del estudiante si es necesario
+            var originalPoints = assignment.StudentPoints;
+            assignment.StudentPoints = assignmentDto.Points;
+
+            _context.Entry(assignment).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
+
+                // Actualizar puntaje del estudiante
+                var student = await _context.Students.FindAsync(assignment.IdStudent);
+                if (student != null)
+                {
+                    student.Score += (assignmentDto.Points - originalPoints);
+                    _context.Entry(student).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentAchievementExists(id))
+                if (!AssignmentExists(id))
                 {
                     return NotFound();
                 }
@@ -183,37 +216,31 @@ namespace Gamificacion_API.Controllers
 
             return NoContent();
         }
-
-        // POST: api/StudentAchievements
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<StudentAchievement>> PostStudentAchievement(StudentAchievement studentAchievement)
+        private bool AssignmentExists(int id)
         {
-          if (_context.StudentAchievements == null)
-          {
-              return Problem("Entity set 'BdgamificacionContext.StudentAchievements'  is null.");
-          }
-            _context.StudentAchievements.Add(studentAchievement);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStudentAchievement", new { id = studentAchievement.IdStudentAchievement }, studentAchievement);
+            return _context.StudentAchievements.Any(e => e.IdStudentAchievement == id);
         }
-
+     
         // DELETE: api/StudentAchievements/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudentAchievement(int id)
+        public async Task<IActionResult> DeleteAssignment(int id)
         {
-            if (_context.StudentAchievements == null)
-            {
-                return NotFound();
-            }
-            var studentAchievement = await _context.StudentAchievements.FindAsync(id);
-            if (studentAchievement == null)
+            var assignment = await _context.StudentAchievements.FindAsync(id);
+            if (assignment == null)
             {
                 return NotFound();
             }
 
-            _context.StudentAchievements.Remove(studentAchievement);
+            _context.StudentAchievements.Remove(assignment);
+
+            // Restar puntos del estudiante
+            var student = await _context.Students.FindAsync(assignment.IdStudent);
+            if (student != null)
+            {
+                student.Score -= assignment.StudentPoints;
+                _context.Entry(student).State = EntityState.Modified;
+            }
+
             await _context.SaveChangesAsync();
 
             return NoContent();

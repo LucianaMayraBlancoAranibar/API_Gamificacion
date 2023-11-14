@@ -11,7 +11,7 @@ public partial class StudentAchievement
 
     public int IdAchievement { get; set; }
 
-    public int? StudentPoints { get; set; }
+    public int StudentPoints { get; set; }
 
     public virtual Achievement IdAchievementNavigation { get; set; } = null!;
 

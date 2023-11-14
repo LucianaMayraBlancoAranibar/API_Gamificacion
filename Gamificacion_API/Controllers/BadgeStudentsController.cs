@@ -68,7 +68,7 @@ namespace Gamificacion_API.Controllers
                 IdStudent = badgeStudent.IdStudent,
                 IdBadge = badgeStudent.IdBadge,
                 AccumulatedPoints = (int)badgeStudent.AccumulatedPoints
-                // Copia el resto de las propiedades necesarias aquí
+               
             };
 
             return CreatedAtAction(nameof(GetBadgeStudent), new { id = badgeStudent.IdBadgeStudent }, badgeStudentDto);
