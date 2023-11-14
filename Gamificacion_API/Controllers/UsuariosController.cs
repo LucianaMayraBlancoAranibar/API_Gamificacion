@@ -247,46 +247,15 @@ namespace Gamificacion_API.Controllers
                 return NotFound("Usuario no encontrado.");
             }
 
-            bool isOldPasswordValid = false;
-
-            try
+            if (string.IsNullOrWhiteSpace(user.Password) || !BCrypt.Net.BCrypt.Verify(model.OldPassword, user.Password))
             {
-                isOldPasswordValid = BCrypt.Net.BCrypt.Verify(model.OldPassword, user.Password);
-            }
-            catch (Exception ex)
-            {
-                // Captura cualquier error que pueda ocurrir durante la verificación de la contraseña
-                // En un entorno de producción, considera registrar este error con un sistema de log
-                return StatusCode(500, "Hubo un error al verificar la contraseña antigua.");
+                return BadRequest("La contraseña antigua no es correcta o el hash de la contraseña almacenada no es válido.");
             }
 
-            if (!isOldPasswordValid)
-            {
-                return BadRequest("La contraseña antigua no es correcta.");
-            }
+            user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
 
-            try
-            {
-                user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
-            }
-            catch (Exception ex)
-            {
-                // Captura cualquier error que pueda ocurrir durante el hasheo de la contraseña
-                // En un entorno de producción, considera registrar este error con un sistema de log
-                return StatusCode(500, "Hubo un error al hashear la nueva contraseña.");
-            }
-
-            try
-            {
-                _context.Usuarios.Update(user);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                // Captura cualquier error que pueda ocurrir al guardar los cambios en la base de datos
-                // En un entorno de producción, considera registrar este error con un sistema de log
-                return StatusCode(500, "Hubo un error al guardar la nueva contraseña en la base de datos.");
-            }
+            _context.Usuarios.Update(user);
+            await _context.SaveChangesAsync();
 
             return Ok("Contraseña actualizada con éxito.");
         }
