@@ -120,7 +120,7 @@ namespace Gamificacion_API.Controllers
                 usuario.Rol = updatedGestorUser.Rol;
                 usuario.IdAcademicUnity = updatedGestorUser.IdAcademicUnity;
                 usuario.IdCareer = updatedGestorUser.IdCareer;
-                usuario.Password = updatedGestorUser.Password;
+                /*usuario.Password = updatedGestorUser.Password;*/
 /*
                 if (usuario.Password != updatedGestorUser.Password)
                 {

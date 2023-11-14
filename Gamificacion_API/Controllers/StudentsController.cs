@@ -95,11 +95,6 @@ namespace Gamificacion_API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateStudentAndUser(int id, [FromBody] StudentUsuario updatedStudentUser)
         {
-            //var existingUser = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == updatedGestorUser.Email);
-            //if (existingUser != null)
-            //{
-            //    return BadRequest("El correo electrónico ya está registrado.");
-            //}
             try
             {
                 var estudiante = await _context.Students.FirstOrDefaultAsync(g => g.IdStudent == id);
@@ -126,12 +121,6 @@ namespace Gamificacion_API.Controllers
                 usuario.IdCareer = updatedStudentUser.IdCareer;
                 usuario.IdAcademicUnity = updatedStudentUser.IdAcademicUnity;
                 usuario.IdCareer = updatedStudentUser.IdCareer;
-                /*
-                if (usuario.Password != updatedGestorUser.Password)
-                {
-                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(updatedGestorUser.Password);
-                    usuario.Password = hashedPassword;
-                }*/
 
                 await _context.SaveChangesAsync();
 
