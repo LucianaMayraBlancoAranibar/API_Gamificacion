@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "n5vHTJWFQN8KddbJ2zhLnSaAqFvety8Tn/WTnXj2vUAjNF2Kd5TY/VkCGiNTN0DRCCpkI5etL+AFuPA9c37niA==",
+  "dgSpecHash": "WMV/UPF1hmoiT50PG4MjYciIwa/KfO7jZrVxMUx1ga6TA2DDAvK83Vqp6te0btMzysOvb6ZLo/VDyLyarVraPw==",
   "success": true,
-  "projectFilePath": "D:\\Univalle\\Proyectos3\\Api ver 2\\API_Gamificacion\\Gamificacion_API\\Gamificacion_API.csproj",
+  "projectFilePath": "D:\\Univalle\\Proyectos3\\API ver3\\API_Gamificacion\\Gamificacion_API\\Gamificacion_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

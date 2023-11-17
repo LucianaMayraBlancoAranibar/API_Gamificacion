@@ -249,7 +249,7 @@ namespace Gamificacion_API.Controllers
 
             if (string.IsNullOrWhiteSpace(user.Password) || !BCrypt.Net.BCrypt.Verify(model.OldPassword, user.Password))
             {
-                return BadRequest("La contraseña antigua no es correcta o el hash de la contraseña almacenada no es válido.");
+                return BadRequest("La contraseña antigua no es correcta.");
             }
 
             user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);

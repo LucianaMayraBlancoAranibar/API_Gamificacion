@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gamificacion_API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ccb998a3f42fd137f0f40b6b69a1dec4f29039b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gamificacion_API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gamificacion_API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
