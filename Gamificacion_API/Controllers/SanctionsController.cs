@@ -85,7 +85,7 @@ namespace Gamificacion_API.Controllers
 
             _context.Sanctions.Add(newSanction);
 
-            student.Score -= request.SanctionValue;
+           
   
             student.Score = Math.Max(0, student.Score - request.SanctionValue);
 

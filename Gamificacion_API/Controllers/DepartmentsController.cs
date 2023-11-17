@@ -144,7 +144,6 @@ namespace Gamificacion_API.Controllers
 
             return NoContent();
         }
-
         private bool DepartmentExists(int id)
         {
             return (_context.Departments?.Any(e => e.IdDepartment == id)).GetValueOrDefault();

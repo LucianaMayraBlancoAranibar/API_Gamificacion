@@ -20,23 +20,22 @@ namespace Gamificacion_API.Controllers
         {
             _context = context;
         }
-
         [HttpPost("AssignInitialByName")]
         public async Task<ActionResult> AssignInitialBadgeToStudentByName([FromBody] AssignBadgeDto badgeData)
         {
-          
+
             var studentExists = await _context.Students.AnyAsync(s => s.IdStudent == badgeData.StudentId);
             if (!studentExists)
             {
                 return NotFound($"No se encontró un estudiante con el ID {badgeData.StudentId}.");
             }
-      
+
             var initialBadge = await _context.Badges
                 .FirstOrDefaultAsync(b => b.BadgeLevel == "Inicial" && b.BadgeName == badgeData.BadgeName);
 
             if (initialBadge == null)
             {
-                
+
                 return NotFound("Badge de nivel 'Inicial' con el nombre especificado no encontrado.");
             }
 
@@ -47,16 +46,16 @@ namespace Gamificacion_API.Controllers
 
             if (existingBadge != null)
             {
-               
+
                 return BadRequest("El estudiante ya tiene asignado el badge de nivel 'Inicial' con ese nombre.");
             }
 
-           
+
             var badgeStudent = new BadgeStudent
             {
                 IdStudent = badgeData.StudentId,
                 IdBadge = initialBadge.IdBadge,
-                AccumulatedPoints = 0 
+                AccumulatedPoints = 0
             };
 
             _context.BadgeStudents.Add(badgeStudent);
@@ -68,11 +67,12 @@ namespace Gamificacion_API.Controllers
                 IdStudent = badgeStudent.IdStudent,
                 IdBadge = badgeStudent.IdBadge,
                 AccumulatedPoints = (int)badgeStudent.AccumulatedPoints
-               
+
             };
 
             return CreatedAtAction(nameof(GetBadgeStudent), new { id = badgeStudent.IdBadgeStudent }, badgeStudentDto);
         }
+
 
         public class BadgeStudentDto
         {
@@ -156,6 +156,27 @@ namespace Gamificacion_API.Controllers
 
             return badgeStudent;
         }
+        // GET: api/StudentAchievements/AllAssignments
+        [HttpGet("AllAssignments")]
+        public async Task<ActionResult<IEnumerable<Object>>> GetAllAssignments()
+        {
+            if (_context.StudentAchievements == null)
+            {
+                return NotFound();
+            }
+            var assignments = await _context.StudentAchievements
+                .Include(sa => sa.IdStudentNavigation) 
+                .Include(sa => sa.IdAchievementNavigation) 
+                .Select(sa => new {
+                    StudentName = sa.IdStudentNavigation.FirstName + " " + sa.IdStudentNavigation.LastName,
+                    AchievementName = sa.IdAchievementNavigation.NameAchievemt, 
+                    Points = sa.StudentPoints,
+                    // AssignedDate = sa.AssignedDate // Descomente y ajuste si tiene un campo de fecha
+                })
+                .ToListAsync();
+            return assignments;
+        }
+
 
         // PUT: api/BadgeStudents/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -202,6 +223,29 @@ namespace Gamificacion_API.Controllers
 
             return CreatedAtAction("GetBadgeStudent", new { id = badgeStudent.IdBadgeStudent }, badgeStudent);
         }
+        [HttpGet("AllBadgeAssignments")]
+        public async Task<ActionResult<IEnumerable<Object>>> GetAllBadgeAssignments()
+        {
+            if (_context.BadgeStudents == null)
+            {
+                return NotFound("No hay asignaciones de badges disponibles.");
+            }
+
+            
+            var assignments = await _context.BadgeStudents
+                .Include(bs => bs.IdStudentNavigation) 
+                .Include(bs => bs.IdBadgeNavigation) 
+                .Select(bs => new {
+                    StudentFullName = bs.IdStudentNavigation.FirstName + " " + bs.IdStudentNavigation.LastName,
+                    BadgeName = bs.IdBadgeNavigation.BadgeName,
+                    AccumulatedPoints = bs.AccumulatedPoints
+                  
+                })
+                .ToListAsync();
+
+            return assignments;
+        }
+
 
         // DELETE: api/BadgeStudents/5
         [HttpDelete("{id}")]

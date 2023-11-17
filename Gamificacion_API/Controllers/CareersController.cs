@@ -38,23 +38,23 @@ namespace Gamificacion_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Career>> GetCareer(int id)
         {
-            var opcion = new JsonSerializerOptions
+            var options = new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.Preserve
             };
 
             var career = await _context.Careers
-                       .Include(e => e.IdDepartmentNavigation)
-                       .FirstOrDefaultAsync(e => e.IdCareer == id);
+                                .Include(e => e.IdDepartmentNavigation)
+                                .FirstOrDefaultAsync(e => e.IdCareer == id);
 
             if (career == null)
             {
                 return NotFound();
             }
 
-            var json = JsonSerializer.Serialize(career, opcion);
+            var json = JsonSerializer.Serialize(career, options);
 
-            return career;
+            return Content(json, "application/json");
         }
 
         // PUT: api/Careers/5
@@ -64,18 +64,18 @@ namespace Gamificacion_API.Controllers
         {
             if (id != upDatecareer.IdCareer)
             {
-                return BadRequest();
+                return BadRequest(); // El ID proporcionado en la URL no coincide con el ID en el cuerpo de la solicitud
             }
 
-            var existingCareer = await _context.Careers.FindAsync(id);
+            var existingDepartment = await _context.Careers.FindAsync(id);
 
-            if (existingCareer == null)
+            if (existingDepartment == null)
             {
                 return NotFound(); // El departamento con el ID especificado no existe
             }
 
-            existingCareer.CareerName = upDatecareer.CareerName;
-            existingCareer.IdDepartment = upDatecareer.IdDepartment; // Actualiza la propiedad IdFaculty
+            existingDepartment.CareerName = upDatecareer.CareerName;
+            existingDepartment.IdDepartment = upDatecareer.IdDepartment; // Actualiza la propiedad IdFaculty
 
             try
             {
@@ -93,7 +93,7 @@ namespace Gamificacion_API.Controllers
                 }
             }
 
-            return NoContent();
+            return NoContent(); // Devuelve una respuesta 204 (NoContent) para indicar éxito sin contenido
         }
 
         // POST: api/Careers
@@ -146,6 +146,7 @@ namespace Gamificacion_API.Controllers
 
             return NoContent();
         }
+
 
 
         private bool CareerExists(int id)

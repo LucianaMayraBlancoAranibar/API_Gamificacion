@@ -276,6 +276,10 @@ public partial class BdgamificacionContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("lastName");
+            entity.Property(e => e.IsActive)
+                  .HasColumnName("IsActive")
+                  .HasColumnType("bit")
+                  .HasDefaultValueSql("1");
 
             entity.HasOne(d => d.IdGestorNavigation).WithOne(p => p.Gestor)
                 .HasForeignKey<Gestor>(d => d.IdGestor)
@@ -415,6 +419,10 @@ public partial class BdgamificacionContext : DbContext
                 .HasMaxLength(75)
                 .IsUnicode(false)
                 .HasColumnName("email");
+            entity.Property(e => e.IsActive)
+                   .HasColumnName("IsActive")
+                   .HasColumnType("bit")
+                   .HasDefaultValueSql("1");
             entity.Property(e => e.IdAcademicUnity).HasColumnName("idAcademicUnity");
             entity.Property(e => e.IdCareer).HasColumnName("idCareer");
             entity.Property(e => e.Password)

@@ -10,6 +10,7 @@ public partial class Gestor
     public string FirstName { get; set; } = null!;
 
     public string LastName { get; set; } = null!;
+    public bool IsActive { get; set; }
 
     public virtual ICollection<Achievement> Achievements { get; set; } = new List<Achievement>();
 

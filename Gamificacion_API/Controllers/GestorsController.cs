@@ -22,7 +22,6 @@ namespace Gamificacion_API.Controllers
         }
 
         // GET: api/Gestors
-
         [HttpGet]
         public async Task<IActionResult> GetAllGestorsAndUsers()
         {
@@ -39,7 +38,8 @@ namespace Gamificacion_API.Controllers
                         FirstName = g.FirstName,
                         LastName = g.LastName,
                         IdAcademicUnity = g.IdGestorNavigation.IdAcademicUnity,
-                        IdCareer = (int)g.IdGestorNavigation.IdCareer,
+                        IdCareer = g.IdGestorNavigation.IdCareer ?? 0,
+
                     })
                     .ToListAsync();
 
@@ -50,7 +50,6 @@ namespace Gamificacion_API.Controllers
                 return StatusCode(500, "Error interno del servidor: " + ex.Message);
             }
         }
-
         // GET: api/Gestors/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGestorUserById(int id)
@@ -149,11 +148,12 @@ namespace Gamificacion_API.Controllers
             {
                 using (var transaction = _context.Database.BeginTransaction())
                 {
+                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(gup.Password);
                     var user = new Usuario
                     {
                         Email = gup.Email,
                         Rol = gup.Rol,
-                        Password = gup.Password,
+                        Password = hashedPassword,
                         IdAcademicUnity = gup.IdAcademicUnity,
                         IdCareer = gup.IdCareer
                     };
@@ -183,6 +183,7 @@ namespace Gamificacion_API.Controllers
             }
         }
 
+
         // DELETE: api/Gestors/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGestor(int id)
@@ -197,18 +198,22 @@ namespace Gamificacion_API.Controllers
                     return NotFound();
                 }
 
-                // Elimina el gestor de la base de datos
-                _context.Gestors.Remove(gestor);
-                _context.Usuarios.Remove(usuario);
+                // Marca el gestor y el usuario como inactivos en lugar de eliminarlos
+                gestor.IsActive = false;
+                usuario.IsActive = false;
+
+                // Guarda los cambios en la base de datos
                 await _context.SaveChangesAsync();
 
-                return NoContent();
+                return Ok("Gestor y usuario marcados como inactivos.");
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Error interno del servidor: " + ex.Message);
             }
         }
+
+
         private bool GestorExists(int id)
         {
             return (_context.Gestors?.Any(e => e.IdGestor == id)).GetValueOrDefault();

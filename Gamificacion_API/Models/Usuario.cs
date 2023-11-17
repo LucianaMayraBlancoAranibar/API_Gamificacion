@@ -16,6 +16,7 @@ public partial class Usuario
     public int? IdCareer { get; set; }
 
     public int IdAcademicUnity { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual Admnistrator? Admnistrator { get; set; }
 

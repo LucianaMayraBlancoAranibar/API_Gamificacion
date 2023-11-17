@@ -99,7 +99,7 @@ namespace Gamificacion_API.Controllers
                 return Problem("Entity set 'BdgamificacionContext.Achievements' is null.");
             }
 
-           
+
             var newAchievement = new Achievement
             {
                 NameAchievemt = achievementCreateDto.NameAchievemt,

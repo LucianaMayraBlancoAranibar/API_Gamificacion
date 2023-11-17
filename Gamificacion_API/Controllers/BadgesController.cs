@@ -44,11 +44,11 @@ namespace Gamificacion_API.Controllers
             var badgeDetails = new[]
             {
                 ("Inicial", 0, "/badge_inicial.png"),
-                ("Principiante", 100, "/badge_principiante.png"),
-                ("Intermedio", 200, "/badge_intermedio.png"),
-                ("Avanzado", 300, "/badge_avanzado.png"),
-                ("Experto", 400, "/badge_experto.png"),
-                ("Maestro", 500, "/badge_maestro.png")
+                ("Principiante", 200, "/badge_principiante.png"),
+                ("Intermedio", 400, "/badge_intermedio.png"),
+                ("Avanzado",600, "/badge_avanzado.png"),
+                ("Experto", 800, "/badge_experto.png"),
+                ("Maestro", 1000, "/badge_maestro.png")
                 
             };
 
@@ -73,7 +73,7 @@ namespace Gamificacion_API.Controllers
 
             badgesToCreate[badgesToCreate.Count - 1].NextLevelBadgeId = null;
 
-            // Guarda los cambios de NextLevelBadgeId en la base de datos.
+          
             _context.Badges.UpdateRange(badgesToCreate);
             await _context.SaveChangesAsync();
 

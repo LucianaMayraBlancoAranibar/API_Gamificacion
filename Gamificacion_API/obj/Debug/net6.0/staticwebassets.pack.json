@@ -37,8 +37,36 @@
       "PackagePath": "staticwebassets\\images\\1247dc7a-79d1-40b7-ae04-845157ec2083.PNG"
     },
     {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\288e6d23-cc65-4d50-9bb3-175641e8af3c.jpg",
+      "PackagePath": "staticwebassets\\images\\288e6d23-cc65-4d50-9bb3-175641e8af3c.jpg"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\4badfba4-7f29-4a22-b6aa-285eab45ca23.PNG",
+      "PackagePath": "staticwebassets\\images\\4badfba4-7f29-4a22-b6aa-285eab45ca23.PNG"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\5e796687-e919-4698-aaec-0c8a85fe0b0d.png",
+      "PackagePath": "staticwebassets\\images\\5e796687-e919-4698-aaec-0c8a85fe0b0d.png"
+    },
+    {
       "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\6989b6b3-dd5c-4485-acea-2066f23b0ccc.png",
       "PackagePath": "staticwebassets\\images\\6989b6b3-dd5c-4485-acea-2066f23b0ccc.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\8f90563b-6cae-48f4-ac86-a159c8a34a21.png",
+      "PackagePath": "staticwebassets\\images\\8f90563b-6cae-48f4-ac86-a159c8a34a21.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\aa3e996d-26e3-4acb-99c9-b9168fc7244a.jpg",
+      "PackagePath": "staticwebassets\\images\\aa3e996d-26e3-4acb-99c9-b9168fc7244a.jpg"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\d1cb173e-595b-42b4-ba64-2fb51e3ccc77.PNG",
+      "PackagePath": "staticwebassets\\images\\d1cb173e-595b-42b4-ba64-2fb51e3ccc77.PNG"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\d311ad3d-9818-41a7-882d-6afb35d63cc8.jpg",
+      "PackagePath": "staticwebassets\\images\\d311ad3d-9818-41a7-882d-6afb35d63cc8.jpg"
     },
     {
       "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\d96ea90c-fe15-4253-9cda-a3e2e01153a5.PNG",
@@ -47,6 +75,10 @@
     {
       "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\e0626087-8134-410c-80af-e0f6908de6f1.png",
       "PackagePath": "staticwebassets\\images\\e0626087-8134-410c-80af-e0f6908de6f1.png"
+    },
+    {
+      "Id": "D:\\Gamificacion\\NUEVO\\Gamificacion_API\\Gamificacion_API\\wwwroot\\images\\f886ec06-d3be-43c3-8497-0620c11b00b9.png",
+      "PackagePath": "staticwebassets\\images\\f886ec06-d3be-43c3-8497-0620c11b00b9.png"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.Gamificacion_API.Microsoft.AspNetCore.StaticWebAssets.props",

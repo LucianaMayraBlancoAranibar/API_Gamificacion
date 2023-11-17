@@ -95,9 +95,20 @@ namespace Gamificacion_API.Controllers
         private List<RankRule> rankRules = new List<RankRule>
         {
             new RankRule { MinScore = 0, RankId = 5 },
-            new RankRule { MinScore = 100, RankId = 6 },
-            new RankRule { MinScore = 200, RankId = 7 },
-             new RankRule { MinScore = 300, RankId = 8 },
+            new RankRule { MinScore = 500, RankId = 6 },
+            new RankRule { MinScore = 1000, RankId = 7 },
+            new RankRule { MinScore = 1500, RankId = 8 },
+            new RankRule { MinScore = 2000, RankId = 9 },
+            new RankRule { MinScore = 2500, RankId = 10 },
+            new RankRule { MinScore = 3000, RankId = 11 },
+            new RankRule { MinScore = 3500, RankId = 12 },
+            new RankRule { MinScore = 4000, RankId = 13 },
+            new RankRule { MinScore = 4500, RankId = 14 },
+            new RankRule { MinScore = 5000, RankId = 15 },
+            new RankRule { MinScore = 5500, RankId = 16 },
+            new RankRule { MinScore = 6000, RankId = 17 },
+            new RankRule { MinScore = 6500, RankId = 18 },
+            new RankRule { MinScore = 7000, RankId = 19 },
         };
 
         [HttpPut("{id}/AssignRankToStudent")]

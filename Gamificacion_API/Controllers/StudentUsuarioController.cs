@@ -1,4 +1,5 @@
-﻿using Gamificacion_API.Data;
+﻿
+using Gamificacion_API.Data;
 using Gamificacion_API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

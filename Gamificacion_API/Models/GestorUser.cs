@@ -8,7 +8,7 @@
 
         public byte Rol { get; set; }
 
-        public string Password { get; set; } = null!;
+        public string? Password { get; set; } = null!;
 
         public string FirstName { get; set; } = null!;
 

@@ -57,7 +57,6 @@ namespace Gamificacion_API.Controllers
         private const byte ADMIN_ROLE = 1;
         private const byte GESTOR_ROLE = 2;
         private const byte STUDENT_ROLE = 3;
-
         [Route("api/users/authenticate")]
         [HttpPost]
         public IActionResult Authenticate([FromBody] Auth user)
@@ -67,10 +66,14 @@ namespace Gamificacion_API.Controllers
 
             var userLogin = _context.Usuarios.FirstOrDefault(usr => usr.Email == user.Email);
 
-            bool isPasswordValid = user.Password == userLogin?.Password; 
+            bool isPasswordValid = user.Password == userLogin?.Password;
 
             if (userLogin == null || !isPasswordValid)
                 return Unauthorized("Credenciales inválidas.");
+
+            // Verificar si el usuario está activo
+            if (!userLogin.IsActive)
+                return Unauthorized("Cuenta inactiva.");
 
             if (userLogin.Rol == STUDENT_ROLE)
                 return Unauthorized("No tienes permisos de administrador.");
@@ -79,6 +82,7 @@ namespace Gamificacion_API.Controllers
 
             return Ok(new { token, user = userLogin });
         }
+
 
         [HttpPost]
         [Route("api/users/login-student")]
@@ -115,6 +119,62 @@ namespace Gamificacion_API.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+        [HttpGet]
+        [Route("api/users/user-details")]
+        public IActionResult GetUserDetails()
+        {
+            // Obtener el token del encabezado 'Authorization'
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+            if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
+            {
+                return Unauthorized("Token no proporcionado.");
+            }
+
+            var token = authorizationHeader.Substring("Bearer ".Length).Trim();
+
+            // Validar el token y obtener el email del usuario
+            var email = ValidateTokenAndGetEmail(token);
+            if (string.IsNullOrEmpty(email))
+            {
+                return Unauthorized("Token inválido.");
+            }
+
+            // Obtener los detalles del usuario basado en el email
+            var user = _context.Usuarios.FirstOrDefault(usr => usr.Email == email);
+            if (user == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            return Ok(user); // Devolver los detalles del usuario
+        }
+
+        private string ValidateTokenAndGetEmail(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            try
+            {
+                var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out var validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                return jwtToken.Claims.First(x => x.Type == ClaimTypes.Name).Value;
+            }
+            catch
+            {
+                // Manejar el error si el token es inválido
+                return null;
+            }
+        }
+
+
         public class ForgotPasswordModel
         {
             public string Email { get; set; }
@@ -135,7 +195,7 @@ namespace Gamificacion_API.Controllers
 
             var token = GeneratePasswordResetToken(email);
 
-            // Aquí debes enviar el token al usuario por correo electrónico
+           
             var callbackUrl = Url.Action(nameof(ResetPassword), "Usuarios", new { token }, protocol: HttpContext.Request.Scheme);
             await _emailService.SendEmailAsync(email, "Reset Password", $"Please reset your password by clicking here: {callbackUrl}");
 
@@ -247,49 +307,19 @@ namespace Gamificacion_API.Controllers
                 return NotFound("Usuario no encontrado.");
             }
 
-            bool isOldPasswordValid = false;
-
-            try
+            if (string.IsNullOrWhiteSpace(user.Password) || !BCrypt.Net.BCrypt.Verify(model.OldPassword, user.Password))
             {
-                isOldPasswordValid = BCrypt.Net.BCrypt.Verify(model.OldPassword, user.Password);
-            }
-            catch (Exception ex)
-            {
-                // Captura cualquier error que pueda ocurrir durante la verificación de la contraseña
-                // En un entorno de producción, considera registrar este error con un sistema de log
-                return StatusCode(500, "Hubo un error al verificar la contraseña antigua.");
+                return BadRequest("La contraseña antigua no es correcta o el hash de la contraseña almacenada no es válido.");
             }
 
-            if (!isOldPasswordValid)
-            {
-                return BadRequest("La contraseña antigua no es correcta.");
-            }
+            user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
 
-            try
-            {
-                user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
-            }
-            catch (Exception ex)
-            {
-                // Captura cualquier error que pueda ocurrir durante el hasheo de la contraseña
-                // En un entorno de producción, considera registrar este error con un sistema de log
-                return StatusCode(500, "Hubo un error al hashear la nueva contraseña.");
-            }
-
-            try
-            {
-                _context.Usuarios.Update(user);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                // Captura cualquier error que pueda ocurrir al guardar los cambios en la base de datos
-                // En un entorno de producción, considera registrar este error con un sistema de log
-                return StatusCode(500, "Hubo un error al guardar la nueva contraseña en la base de datos.");
-            }
+            _context.Usuarios.Update(user);
+            await _context.SaveChangesAsync();
 
             return Ok("Contraseña actualizada con éxito.");
         }
+
 
         // GET: api/Usuarios
         [HttpGet]

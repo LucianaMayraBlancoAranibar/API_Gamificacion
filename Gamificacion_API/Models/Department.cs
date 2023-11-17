@@ -13,5 +13,5 @@ public partial class Department
 
     public virtual ICollection<Career> Careers { get; set; } = new List<Career>();
 
-    public virtual Faculty IdFacultyNavigation { get; set; } = null!;
+    public virtual Faculty? IdFacultyNavigation { get; set; } = null!;
 }
