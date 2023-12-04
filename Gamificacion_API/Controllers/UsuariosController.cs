@@ -66,7 +66,7 @@ namespace Gamificacion_API.Controllers
 
             var userLogin = _context.Usuarios.FirstOrDefault(usr => usr.Email == user.Email);
 
-            bool isPasswordValid = user.Password == userLogin?.Password;
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(user.Password, userLogin?.Password);
 
             if (userLogin == null || !isPasswordValid)
                 return Unauthorized("Credenciales inválidas.");
@@ -93,7 +93,7 @@ namespace Gamificacion_API.Controllers
 
             var userLogin = _context.Usuarios.FirstOrDefault(usr => usr.Email == user.Email);
 
-            bool isPasswordValid = user.Password == userLogin?.Password; 
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(user.Password, userLogin?.Password);
 
             if (userLogin == null || !isPasswordValid)
                 return Unauthorized("Credenciales inválidas.");
